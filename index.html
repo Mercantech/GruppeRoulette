@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="da">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#160d2a" />
+    <meta
+      name="description"
+      content="GruppeRoulette trækker tilfældige grupper af tre med maksimal casino-stemning."
+    />
+    <title>GruppeRoulette</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient" aria-hidden="true">
+      <span class="orb orb-one"></span>
+      <span class="orb orb-two"></span>
+      <span class="noise"></span>
+    </div>
+
+    <main class="app-shell">
+      <section class="machine-zone" aria-label="Gruppetrækning">
+        <div class="slot-wrap">
+          <div class="slot-glow" aria-hidden="true"></div>
+          <div class="slot-machine" id="slotMachine">
+            <div class="machine-top">
+              <span class="mini-light"></span>
+              <div class="jackpot-sign machine-brand" aria-label="GruppeRoulette">
+                <span class="brand-mark" aria-hidden="true">GR</span>
+                <span class="machine-brand-name"><strong>GRUPPE</strong><em>ROULETTE</em></span>
+              </div>
+              <span class="mini-light"></span>
+            </div>
+
+            <div class="bulb-row top-bulbs" aria-hidden="true"></div>
+            <div class="reel-stage">
+              <div class="reel" data-reel="0">
+                <span class="reel-number">01</span>
+                <div class="reel-window"><span class="reel-name">Klar?</span></div>
+              </div>
+              <div class="reel" data-reel="1">
+                <span class="reel-number">02</span>
+                <div class="reel-window"><span class="reel-name">Klar?</span></div>
+              </div>
+              <div class="reel" data-reel="2">
+                <span class="reel-number">03</span>
+                <div class="reel-window"><span class="reel-name">Klar?</span></div>
+              </div>
+              <div class="payline" aria-hidden="true"></div>
+            </div>
+            <div class="bulb-row bottom-bulbs" aria-hidden="true"></div>
+
+            <div class="machine-footer">
+              <div class="status-display">
+                <span>STATUS</span>
+                <strong id="machineStatus">INDSÆT NAVNE</strong>
+              </div>
+              <button class="spin-button" id="spinButton" type="button" disabled>
+                <span class="spin-icon" aria-hidden="true">↻</span>
+                <span class="spin-label">TRÆK 3 NAVNE</span>
+              </button>
+              <div class="counter-display">
+                <span>TILBAGE</span>
+                <strong><b id="remainingCount">0</b> NAVNE</strong>
+              </div>
+            </div>
+
+            <button class="lever" id="lever" type="button" aria-label="Træk i håndtaget for at danne en gruppe">
+              <div class="lever-knob"></div>
+              <div class="lever-stick"></div>
+              <div class="lever-base"></div>
+              <span class="lever-hint">TRÆK</span>
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <aside class="side-panel">
+        <div class="panel-toolbar">
+          <button class="secondary-button round-button" id="newRoundButton" type="button"><span aria-hidden="true">↻</span> Ny runde</button>
+          <button class="secondary-button overview-button" id="overviewButton" type="button" aria-label="Åbn komplet gruppeoverblik" aria-expanded="false" aria-controls="fullOverview"><span aria-hidden="true">▦</span> Overblik</button>
+          <button class="icon-button" id="soundToggle" type="button" aria-label="Slå lyd fra" aria-pressed="true">
+            <span class="sound-on" aria-hidden="true">◖))</span>
+            <span class="sound-off" aria-hidden="true">◖×</span>
+          </button>
+          <button class="secondary-button" id="resetButton" type="button"><span aria-hidden="true">×</span> Nulstil</button>
+        </div>
+        <div class="panel-tabs" role="tablist" aria-label="Overblik">
+          <button class="panel-tab active" id="peopleTab" role="tab" aria-selected="true" aria-controls="peoplePanel">
+            Navne <span id="peopleBadge">0</span>
+          </button>
+          <button class="panel-tab" id="groupsTab" role="tab" aria-selected="false" aria-controls="groupsPanel">
+            Grupper <span id="groupsBadge">0</span>
+          </button>
+        </div>
+
+        <div class="tab-panel active" id="peoplePanel" role="tabpanel" aria-labelledby="peopleTab">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">PULJEN</p>
+              <h2>Navne tilbage</h2>
+            </div>
+            <button class="small-button" id="openAddButton" type="button">+ Tilføj</button>
+          </div>
+          <div class="progress-meta">
+            <span id="progressText">Ingen navne endnu</span>
+            <span id="progressPercent">0%</span>
+          </div>
+          <div class="progress-track"><span id="progressBar"></span></div>
+          <div class="name-list" id="nameList"></div>
+          <div class="empty-state" id="namesEmpty">
+            <span aria-hidden="true">♣</span>
+            <strong>Fyld maskinen</strong>
+            <p>Tilføj mindst tre navne for at starte.</p>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="groupsPanel" role="tabpanel" aria-labelledby="groupsTab" hidden>
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">RESULTATER</p>
+              <h2>Dannede grupper</h2>
+            </div>
+            <button class="small-button" id="copyGroupsButton" type="button">Kopiér</button>
+          </div>
+          <div class="group-list" id="groupList"></div>
+          <div class="empty-state" id="groupsEmpty">
+            <span aria-hidden="true">♠</span>
+            <strong>Ingen grupper endnu</strong>
+            <p>Den første jackpot venter på dig.</p>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <section class="full-overview" id="fullOverview" aria-hidden="true" aria-label="Komplet gruppeoverblik">
+      <div class="overview-topbar">
+        <div class="overview-brand">
+          <span class="brand-mark" aria-hidden="true">GR</span>
+          <div><small>GRUPPEROULETTE</small><h2>Komplet gruppeoverblik</h2></div>
+        </div>
+        <button class="overview-close" id="closeOverviewButton" type="button">Luk <span aria-hidden="true">×</span></button>
+      </div>
+      <div class="overview-content" id="overviewContent"></div>
+    </section>
+
+    <dialog class="add-dialog" id="addDialog">
+      <form method="dialog" id="addForm">
+        <div class="dialog-top">
+          <div>
+            <p class="eyebrow">FYLD MASKINEN</p>
+            <h2>Tilføj deltagere</h2>
+          </div>
+          <button class="close-button" value="cancel" aria-label="Luk" type="submit">×</button>
+        </div>
+        <label for="namesInput">Ét navn pr. linje</label>
+        <textarea id="namesInput" rows="9" placeholder="Alma&#10;Malik&#10;Freja"></textarea>
+        <div class="dialog-actions">
+          <button class="text-button" id="loadDemoButton" type="button">Brug demo-navne</button>
+          <button class="primary-button" id="addNamesButton" type="button">Tilføj navne</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="winner-toast" id="winnerToast" role="status" aria-live="polite" aria-hidden="true">
+      <span>★</span>
+      <div>
+        <small>NY GRUPPE LÅST OP</small>
+        <strong id="winnerToastGroupName"></strong>
+        <span class="toast-members" id="winnerToastNames"></span>
+      </div>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="magic-event" id="magicEvent" role="status" aria-live="assertive" aria-hidden="true">
+      <div class="magic-rune" id="effectRuneLeft" aria-hidden="true">✦</div>
+      <div class="magic-message">
+        <small id="effectKicker"></small>
+        <strong id="effectTitle"></strong>
+        <span id="effectSubtitle"></span>
+      </div>
+      <div class="magic-rune" id="effectRuneRight" aria-hidden="true">✦</div>
+    </div>
+    <div class="magic-burst" id="magicBurst" aria-hidden="true"></div>
+    <div class="hacker-overlay" id="hackerOverlay" role="dialog" aria-modal="true" aria-labelledby="hackerTitle" aria-hidden="true">
+      <div class="hacker-terminal">
+        <div class="terminal-bar">
+          <span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>root@grupperoulette:~</span>
+          <button id="closeHackerButton" type="button" aria-label="Luk hackerterminal">×</button>
+        </div>
+        <div class="terminal-screen">
+          <div class="terminal-skull" aria-hidden="true">☠</div>
+          <p class="terminal-line line-1">&gt; BRYDER IGENNEM GRUPPEFIREWALL...</p>
+          <p class="terminal-line line-2" id="hackerTarget"></p>
+          <p class="terminal-line line-3" id="hackerMembers"></p>
+          <p class="terminal-line line-4">&gt; DEKRYPTERER TEAM-MATRIX <span class="terminal-loader">██████████</span> 100%</p>
+          <p class="terminal-line line-5 terminal-alias" id="hackerNewName"></p>
+          <h2 class="terminal-line line-6" id="hackerTitle">NY IDENTITET TILDELT!</h2>
+          <p class="terminal-line line-7 terminal-safe">Medlemmer og makkerhistorik er stadig intakte.</p>
+          <button class="terminal-exit terminal-line line-7" id="terminalExitButton" type="button">ACCEPTÉR NYT NAVN_</button>
+        </div>
+      </div>
+    </div>
+    <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+    <script src="app.js"></script>
+  </body>
+</html>
