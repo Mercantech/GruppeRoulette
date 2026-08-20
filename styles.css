@@ -95,6 +95,7 @@ button { color: inherit; }
 .reel-number { position: absolute; z-index: 4; top: 10px; left: 50%; transform: translateX(-50%); color: #7b6a82; font-size: 9px; font-weight: 800; letter-spacing: .15em; }
 .reel-window { height: 100%; display: grid; place-items: center; padding: 20px 10px; }
 .reel-name { color: #1a1020; font-family: "Archivo Black"; font-size: clamp(16px, 2.15vw, 28px); text-transform: uppercase; text-align: center; word-break: break-word; line-height: .95; }
+.emoji-mode .reel-name { font-size: clamp(38px, 5vw, 64px); }
 .reel.spinning .reel-name { animation: reelBlur .12s linear infinite; }
 .reel.locked { animation: reelLock .44s cubic-bezier(.2,1.5,.45,1); }
 @keyframes reelBlur { 0% { transform: translateY(-26px); filter: blur(2px); opacity: .35; } 50% { opacity: 1; } 100% { transform: translateY(26px); filter: blur(2px); opacity: .35; } }

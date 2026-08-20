@@ -4,6 +4,7 @@ const demoNames = [
   "Viggo", "Luna", "William", "Ida", "Adam", "Karla", "August", "Aya", "Mads"
 ];
 const colors = ["#ffd84d", "#ff4fa3", "#8a36ff", "#54e3c2", "#ff815a", "#7bb7ff"];
+const slotEmojis = ["🍒", "⭐", "💎", "🔥", "👾", "🦄", "🍀", "🎰", "⚡", "🌈"];
 const groupNameStarts = [
   "Turbo", "Disco", "Kage", "Super", "Ninja", "Laser", "Måne", "Bølle", "Vaffel", "Glitter",
   "Samba", "Torden", "Fjolle", "Raket", "Banan", "Kakao", "Mega", "Pølse", "Konfetti", "HokusPokus",
@@ -148,9 +149,12 @@ function render() {
   elements.progressText.textContent = total ? `${used} af ${total} navne trukket` : "Ingen navne endnu";
   elements.progressPercent.textContent = `${percent}%`;
   elements.progressBar.style.width = `${percent}%`;
-  elements.spin.disabled = left < 3 || isSpinning;
-  elements.lever.setAttribute("aria-disabled", String(left < 3 || isSpinning));
-  elements.status.textContent = left >= 3 ? "MASKINEN ER KLAR" : left > 0 ? "MANGLER NAVNE" : "INDSÆT NAVNE";
+  const hasIncompleteGroup = left > 0 && left < 3;
+  if (left > 0) elements.machine.classList.remove("emoji-mode");
+  elements.spin.disabled = hasIncompleteGroup || isSpinning;
+  elements.lever.setAttribute("aria-disabled", String(hasIncompleteGroup || isSpinning));
+  elements.status.textContent = left >= 3 ? "MASKINEN ER KLAR" : left > 0 ? "MANGLER NAVNE" : "EMOJI MODE";
+  elements.spin.querySelector(".spin-label").textContent = left === 0 ? "SPIN EMOJIS" : "TRÆK 3 NAVNE";
   elements.namesEmpty.hidden = left > 0;
   elements.groupsEmpty.hidden = state.groups.length > 0;
 
@@ -427,7 +431,12 @@ function rerollGroupName(groupId) {
 }
 
 async function spin() {
-  if (isSpinning || state.remaining.length < 3) return;
+  if (isSpinning) return;
+  if (state.remaining.length === 0) return spinEmojis();
+  if (state.remaining.length < 3) {
+    showToast("Der mangler tre navne til en gruppe");
+    return;
+  }
   const plan = createRoundPlan(state.remaining);
   if (!plan) {
     showToast("Ingen flere grupper kan laves uden gentagelser");
@@ -481,6 +490,62 @@ async function spin() {
   render();
 }
 
+async function spinEmojis() {
+  if (isSpinning) return;
+  isSpinning = true;
+  render();
+  ensureAudio();
+  elements.machine.classList.add("emoji-mode");
+  elements.machine.classList.add("spinning-machine");
+  elements.lever.classList.add("pulled");
+  elements.status.textContent = "EMOJI-SPIN...";
+  playLeverSound();
+  setTimeout(() => elements.lever.classList.remove("pulled"), 430);
+
+  const forceJackpot = Math.random() < .18;
+  const jackpotEmoji = slotEmojis[Math.floor(Math.random() * slotEmojis.length)];
+  const result = forceJackpot
+    ? [jackpotEmoji, jackpotEmoji, jackpotEmoji]
+    : Array.from({ length: 3 }, () => slotEmojis[Math.floor(Math.random() * slotEmojis.length)]);
+  const reels = $$(".reel");
+  const reelNames = $$(".reel-name");
+  reels.forEach((reel) => reel.classList.add("spinning"));
+
+  const cycles = reelNames.map((node, reelIndex) => setInterval(() => {
+    node.textContent = slotEmojis[Math.floor(Math.random() * slotEmojis.length)];
+    playTick(reelIndex);
+  }, 72 + reelIndex * 10));
+
+  await wait(850);
+  for (let index = 0; index < 3; index++) {
+    await wait(430);
+    clearInterval(cycles[index]);
+    reels[index].classList.remove("spinning");
+    reels[index].classList.add("locked");
+    reelNames[index].textContent = result[index];
+    playLock(index);
+    setTimeout(() => reels[index].classList.remove("locked"), 500);
+  }
+
+  await wait(180);
+  isSpinning = false;
+  elements.machine.classList.remove("spinning-machine");
+  const isJackpot = result.every((emoji) => emoji === result[0]);
+  render();
+
+  if (isJackpot) {
+    elements.status.textContent = "EMOJI JACKPOT!";
+    elements.machine.classList.add("jackpot");
+    setTimeout(() => elements.machine.classList.remove("jackpot"), 650);
+    playWinSound();
+    launchConfetti();
+    triggerEmojiJackpot(result[0]);
+  } else {
+    elements.status.textContent = "PRØV IGEN";
+    showToast("Ingen emoji-jackpot denne gang");
+  }
+}
+
 function wait(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
 
 function beginLeverPull(event) {
@@ -505,11 +570,11 @@ function endLeverPull(event) {
   elements.lever.classList.remove("dragging");
   elements.lever.style.removeProperty("--lever-angle");
   if (distance >= 45) {
-    state.leverPullCount = (state.leverPullCount || 0) + 1;
-    if (state.leverPullCount % 2 === 0) {
-      pendingCelebrationId = "wizard";
+    if (state.remaining.length >= 3) {
+      state.leverPullCount = (state.leverPullCount || 0) + 1;
+      if (state.leverPullCount % 2 === 0) pendingCelebrationId = "wizard";
+      saveState();
     }
-    saveState();
     spin();
   } else if (distance < 6) {
     spin();
@@ -564,14 +629,23 @@ function chooseCelebration(forcedId) {
 
 function triggerGroupCelebration(group, forcedId) {
   const effect = chooseCelebration(forcedId);
+  triggerCelebration(effect, group.name, effect.subtitle, group.name);
+}
+
+function triggerEmojiJackpot(emoji) {
+  const effect = celebrations.find((candidate) => candidate.id === "jackpot");
+  triggerCelebration(effect, `${emoji} ${emoji} ${emoji}`, "EMOJI JACKPOT! Den hemmelige maskine er vågnet", "Emoji Jackpot!");
+}
+
+function triggerCelebration(effect, title, subtitle, voiceText) {
   clearTimeout(magicTimer);
   document.body.classList.add("magic-active");
   elements.magicEvent.className = `magic-event effect-${effect.id}`;
   elements.magicEvent.style.setProperty("--effect-color", effect.color);
   elements.magicEvent.style.setProperty("--effect-accent", effect.accent);
   elements.effectKicker.textContent = effect.kicker;
-  elements.effectTitle.textContent = group.name;
-  elements.effectSubtitle.textContent = effect.subtitle;
+  elements.effectTitle.textContent = title;
+  elements.effectSubtitle.textContent = subtitle;
   elements.effectRuneLeft.textContent = effect.symbols[0];
   elements.effectRuneRight.textContent = effect.symbols[1] || effect.symbols[0];
   elements.magicEvent.setAttribute("aria-hidden", "false");
@@ -591,7 +665,7 @@ function triggerGroupCelebration(group, forcedId) {
   }
   state.lastCelebrationId = effect.id;
   saveState();
-  playCelebrationSound(effect, group.name);
+  playCelebrationSound(effect, voiceText);
   magicTimer = setTimeout(() => {
     elements.magicEvent.classList.remove("show");
     document.body.classList.remove("magic-active");
@@ -607,6 +681,7 @@ function resetAll() {
   if (!confirm("Vil du slette alle navne og grupper og starte helt forfra?")) return;
   state = { remaining: [], groups: [], roster: [], round: 1, initialCount: 0, leverPullCount: 0 };
   saveState();
+  elements.machine.classList.remove("emoji-mode");
   $$(".reel-name").forEach((node) => node.textContent = "Klar?");
   render();
   switchTab("people");
