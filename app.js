@@ -676,7 +676,7 @@ function triggerGroupCelebration(group, forcedId) {
 
 function triggerEmojiJackpot(emoji) {
   const effect = celebrations.find((candidate) => candidate.id === "jackpot");
-  triggerCelebration(effect, `${emoji} ${emoji} ${emoji}`, "EMOJI JACKPOT! Den hemmelige maskine er vågnet", "Emoji Jackpot!");
+  triggerCelebration(effect, `${emoji} ${emoji} ${emoji}`, "EMOJI JACKPOT! Den hemmelige maskine er vågnet", "");
 }
 
 function triggerCelebration(effect, title, subtitle, voiceText) {
@@ -1100,34 +1100,18 @@ function playCelebrationSound(effect, groupName) {
   effect.notes.forEach((frequency, index) => tone(frequency, .65, index % 2 ? "triangle" : "sine", .038, index * .09));
   tone(effect.notes[0] / 2, 1.25, "triangle", .025);
 
-  const style = { ...voiceStyles.default, ...(effect.voiceStyle || {}) };
-  const hype = effect.voice;
   const team = speakableGroupName(groupName);
-  const lines = [];
+  if (!team) return;
 
-  if (hype) {
-    lines.push({
-      text: hype,
-      lang: effect.lang || "en-US",
-      rate: style.rate,
-      pitch: style.pitch,
-      volume: style.volume,
-      gap: 220
-    });
-  }
-
-  if (team && team.toLocaleLowerCase("da") !== String(hype || "").toLocaleLowerCase("da")) {
-    lines.push({
-      text: team,
-      lang: "da-DK",
-      rate: style.rate,
-      pitch: style.pitch,
-      volume: style.volume ?? voiceStyles.default.volume,
-      gap: 0
-    });
-  }
-
-  speakAnnouncement(lines);
+  const style = { ...voiceStyles.default, ...(effect.voiceStyle || {}) };
+  speakAnnouncement([{
+    text: team,
+    lang: "da-DK",
+    rate: style.rate,
+    pitch: style.pitch,
+    volume: style.volume ?? voiceStyles.default.volume,
+    gap: 0
+  }]);
 }
 
 function playHackSound() {
