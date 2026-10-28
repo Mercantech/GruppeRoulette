@@ -57,23 +57,21 @@ const groupNameEnds = [
   "Grævlingerne", "Pindsvinene", "Søløverne", "Krokodillerne", "Papegøjerne", "Natteravnene"
 ];
 const celebrations = [
-  { id: "monster", kicker: "UHYRET ER LØS!", title: "MONSTER GROUP!", subtitle: "Et hold med gigantiske kræfter", voice: "Monster group!", lang: "en-US", color: "#78ff65", accent: "#8a36ff", symbols: ["◆", "✹", "⚡", "⬢"], notes: [110, 82, 147, 220], voiceStyle: { rate: .78, pitch: .62, volume: 1 } },
-  { id: "epic", kicker: "LEGENDARISK TRÆKNING", title: "EPIC GROUP!", subtitle: "Det her bliver stort", voice: "Epic group!", lang: "en-US", color: "#ffd84d", accent: "#ff6b35", symbols: ["★", "✦", "✺", "⚡"], notes: [392, 523, 659, 784], voiceStyle: { rate: 1.02, pitch: .92, volume: 1 } },
-  { id: "wizard", kicker: "MAGISK FORSTYRRELSE!", title: "Kasper den mægtige troldmand er på spil!", subtitle: "Maskinen sitrer af mystiske kræfter...", voice: "Kasper den mægtige troldmand er på spil!", lang: "da-DK", color: "#d59bff", accent: "#8a36ff", symbols: ["✦", "★", "✧", "☾", "✺"], notes: [220, 277, 330, 440, 554, 659, 880], voiceStyle: { rate: .9, pitch: .72, volume: .95 } },
-  { id: "disco", kicker: "LYSET RAMMER DANSEGULVET", title: "DISCO DREAM TEAM!", subtitle: "Groove-niveauet er kritisk højt", voice: "Disco dream team!", lang: "en-US", color: "#ff4fa3", accent: "#43e8ff", symbols: ["●", "✦", "◆", "♫"], notes: [262, 330, 392, 523], voiceStyle: { rate: 1.08, pitch: 1.05, volume: 1 } },
-  { id: "space", kicker: "OPSENDELSE GODKENDT", title: "GALACTIC GROUP!", subtitle: "Næste stop: en helt anden galakse", voice: "Galactic group!", lang: "en-US", color: "#7bb7ff", accent: "#8a36ff", symbols: ["✦", "☄", "◉", "⋆"], notes: [196, 294, 440, 587], voiceStyle: { rate: .88, pitch: .7, volume: .95 } },
-  { id: "viking", kicker: "VALHALLA KALDER", title: "VIKING VICTORY!", subtitle: "Et hold smedet i torden og triumf", voice: "Viking victory!", lang: "en-US", color: "#ff9f43", accent: "#e74c3c", symbols: ["ᚱ", "ᚦ", "⚔", "ᛉ"], notes: [147, 196, 220, 294], voiceStyle: { rate: .82, pitch: .58, volume: 1 } },
-  { id: "ninja", kicker: "LYDLØS. HURTIG. DØDBRINGENDE.", title: "NINJA SQUAD!", subtitle: "Ingen så dem komme", voice: "Ninja squad!", lang: "en-US", color: "#ff4567", accent: "#6d28d9", symbols: ["✦", "╱", "◆", "✧"], notes: [330, 247, 494, 370], voiceStyle: { rate: 1.18, pitch: .68, volume: .85 } },
-  { id: "royal", kicker: "FANFAREN LYDER", title: "ROYAL GROUP!", subtitle: "Kronen sidder perfekt", voice: "Royal group!", lang: "en-US", color: "#ffe082", accent: "#b388ff", symbols: ["♛", "✦", "♜", "♦"], notes: [523, 659, 784, 1047], voiceStyle: { rate: .94, pitch: .85, volume: .95 } },
-  { id: "fire", kicker: "TEMPERATUREN STIGER", title: "FIRE SQUAD!", subtitle: "Det her hold er brandvarmt", voice: "Fire squad!", lang: "en-US", color: "#ff6333", accent: "#ffd84d", symbols: ["▲", "✹", "◆", "⚡"], notes: [175, 233, 349, 466], voiceStyle: { rate: 1.06, pitch: .8, volume: 1 } },
-  { id: "ice", kicker: "ABSOLUT NULPUNKT", title: "ICE LEGENDS!", subtitle: "Iskolde nerver. Knivskarpt hold.", voice: "Ice legends!", lang: "en-US", color: "#8ff5ff", accent: "#4b7bff", symbols: ["❄", "✦", "◇", "❅"], notes: [659, 587, 494, 392], voiceStyle: { rate: .86, pitch: .66, volume: .9 } },
-  { id: "jungle", kicker: "JUNGLEN VÅGNER", title: "WILD GROUP!", subtitle: "Det bliver helt ustyrligt", voice: "Wild group!", lang: "en-US", color: "#8ee34d", accent: "#ffc83d", symbols: ["❋", "◆", "✦", "♣"], notes: [196, 262, 330, 392], voiceStyle: { rate: 1.04, pitch: .78, volume: 1 } },
-  { id: "jackpot", kicker: "ALLE LAMPER BLINKER", title: "MEGA JACKPOT GROUP!", subtitle: "Maskinen har talt", voice: "Mega jackpot!", lang: "en-US", color: "#ffd84d", accent: "#ff4fa3", symbols: ["★", "7", "◆", "✦"], notes: [523, 659, 784, 988, 1175], voiceStyle: { rate: 1.1, pitch: .9, volume: 1 } }
+  { id: "monster", kicker: "UHYRET ER LØS!", title: "MONSTER GROUP!", subtitle: "Et hold med gigantiske kræfter", voice: "Monster Group!", lang: "en-US", color: "#78ff65", accent: "#8a36ff", symbols: ["◆", "✹", "⚡", "⬢"], notes: [110, 82, 147, 220], voiceStyle: { rate: .82, pitch: .85 } },
+  { id: "epic", kicker: "LEGENDARISK TRÆKNING", title: "EPIC GROUP!", subtitle: "Det her bliver stort", voice: "Epic Group!", lang: "en-US", color: "#ffd84d", accent: "#ff6b35", symbols: ["★", "✦", "✺", "⚡"], notes: [392, 523, 659, 784], voiceStyle: { rate: 1, pitch: 1.05 } },
+  { id: "wizard", kicker: "MAGISK FORSTYRRELSE!", title: "Kasper den mægtige troldmand er på spil!", subtitle: "Maskinen sitrer af mystiske kræfter...", voice: "Kasper den mægtige troldmand er på spil!", lang: "da-DK", color: "#d59bff", accent: "#8a36ff", symbols: ["✦", "★", "✧", "☾", "✺"], notes: [220, 277, 330, 440, 554, 659, 880], voiceStyle: { rate: .94, pitch: .95 } },
+  { id: "disco", kicker: "LYSET RAMMER DANSEGULVET", title: "DISCO DREAM TEAM!", subtitle: "Groove-niveauet er kritisk højt", voice: "Disco Dream Team!", lang: "en-US", color: "#ff4fa3", accent: "#43e8ff", symbols: ["●", "✦", "◆", "♫"], notes: [262, 330, 392, 523], voiceStyle: { rate: 1.04, pitch: 1.05 } },
+  { id: "space", kicker: "OPSENDELSE GODKENDT", title: "GALACTIC GROUP!", subtitle: "Næste stop: en helt anden galakse", voice: "Galactic Group!", lang: "en-US", color: "#7bb7ff", accent: "#8a36ff", symbols: ["✦", "☄", "◉", "⋆"], notes: [196, 294, 440, 587], voiceStyle: { rate: .94, pitch: .95 } },
+  { id: "viking", kicker: "VALHALLA KALDER", title: "VIKING VICTORY!", subtitle: "Et hold smedet i torden og triumf", voice: "Viking Victory!", lang: "en-US", color: "#ff9f43", accent: "#e74c3c", symbols: ["ᚱ", "ᚦ", "⚔", "ᛉ"], notes: [147, 196, 220, 294], voiceStyle: { rate: .9, pitch: .9 } },
+  { id: "ninja", kicker: "LYDLØS. HURTIG. DØDBRINGENDE.", title: "NINJA SQUAD!", subtitle: "Ingen så dem komme", voice: "Ninja Squad!", lang: "en-US", color: "#ff4567", accent: "#6d28d9", symbols: ["✦", "╱", "◆", "✧"], notes: [330, 247, 494, 370], voiceStyle: { rate: 1.12, pitch: .95 } },
+  { id: "royal", kicker: "FANFAREN LYDER", title: "ROYAL GROUP!", subtitle: "Kronen sidder perfekt", voice: "Royal Group!", lang: "en-US", color: "#ffe082", accent: "#b388ff", symbols: ["♛", "✦", "♜", "♦"], notes: [523, 659, 784, 1047], voiceStyle: { rate: .96, pitch: 1 } },
+  { id: "fire", kicker: "TEMPERATUREN STIGER", title: "FIRE SQUAD!", subtitle: "Det her hold er brandvarmt", voice: "Fire Squad!", lang: "en-US", color: "#ff6333", accent: "#ffd84d", symbols: ["▲", "✹", "◆", "⚡"], notes: [175, 233, 349, 466], voiceStyle: { rate: 1.02, pitch: 1 } },
+  { id: "ice", kicker: "ABSOLUT NULPUNKT", title: "ICE LEGENDS!", subtitle: "Iskolde nerver. Knivskarpt hold.", voice: "Ice Legends!", lang: "en-US", color: "#8ff5ff", accent: "#4b7bff", symbols: ["❄", "✦", "◇", "❅"], notes: [659, 587, 494, 392], voiceStyle: { rate: .94, pitch: .95 } },
+  { id: "jungle", kicker: "JUNGLEN VÅGNER", title: "WILD GROUP!", subtitle: "Det bliver helt ustyrligt", voice: "Wild Group!", lang: "en-US", color: "#8ee34d", accent: "#ffc83d", symbols: ["❋", "◆", "✦", "♣"], notes: [196, 262, 330, 392], voiceStyle: { rate: 1, pitch: 1 } },
+  { id: "jackpot", kicker: "ALLE LAMPER BLINKER", title: "MEGA JACKPOT GROUP!", subtitle: "Maskinen har talt", voice: "Mega Jackpot Group!", lang: "en-US", color: "#ffd84d", accent: "#ff4fa3", symbols: ["★", "7", "◆", "✦"], notes: [523, 659, 784, 988, 1175], voiceStyle: { rate: 1.04, pitch: 1.05 } }
 ];
 const voiceStyles = {
-  default: { rate: .98, pitch: .82, volume: .95 },
-  hype: { rate: 1.05, pitch: .88, volume: 1 },
-  deep: { rate: .84, pitch: .6, volume: 1 }
+  default: { rate: .96, pitch: 1, volume: .92 }
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -919,16 +917,18 @@ function voiceScore(voice, langPrefix) {
   else if (lang.startsWith(langPrefix.slice(0, 2))) score += 18;
   else return -100;
 
-  // Neural/natural lyder menneskeligt – men Online-stemmer dør ofte efter få kald i Chrome.
-  if (/natural|neural|premium|enhanced|wavenet|studio|online/.test(name)) score += 28;
-  if (voice.localService) score += preferOnlineVoices ? 6 : 30;
-  else score += preferOnlineVoices ? 10 : -8;
+  // Microsoft Natural/Online først – det var den stemme, der lød bedst.
+  if (/microsoft/.test(name)) score += 40;
+  if (/natural|neural|online/.test(name)) score += 35;
+  if (/freja|sara|christel|nastja|mark|guy|george|aria|jenny/.test(name)) score += 18;
+  if (/google|apple/.test(name)) score += 8;
+  if (/premium|enhanced|wavenet|studio/.test(name)) score += 12;
 
-  // Edgy announcer-agtige stemmer først; bløde assistent-stemmer længere nede.
-  if (/guy|david|mark|george|christopher|eric|steffan|ryan|thomas|jeppe|anders|magnus|daniel|arthur|aaron|roger/.test(name)) score += 22;
-  if (/microsoft|google|apple/.test(name)) score += 8;
-  if (/freja|sara|zira|samantha|karen|moira|fiona|helena|jenny|aria|susan|anna|linda/.test(name)) score -= 4;
-  if (/compact|eloquence|espeak|robot|novelty|whisper|dummy/.test(name)) score -= 40;
+  // Hvis Online midlertidigt fejler, vælg lokal Microsoft Natural næste gang.
+  if (voice.localService) score += preferOnlineVoices ? 4 : 28;
+  else score += preferOnlineVoices ? 16 : -6;
+
+  if (/compact|eloquence|espeak|robot|novelty|whisper|dummy|desktop/.test(name) && !/natural|online/.test(name)) score -= 35;
   if (voice.default) score += 1;
   return score;
 }
@@ -1044,7 +1044,11 @@ function speakLine(text, options = {}, attempt = 0) {
     phrase.rate = options.rate ?? voiceStyles.default.rate;
     phrase.pitch = options.pitch ?? voiceStyles.default.pitch;
     phrase.volume = options.volume ?? voiceStyles.default.volume;
-    phrase.onend = finish;
+    phrase.onend = () => {
+      // Efter et lykkedes kald må Online gerne prøves igen.
+      if (attempt === 0) preferOnlineVoices = true;
+      finish();
+    };
     phrase.onerror = retry;
 
     // Hold motoren i live mens den taler (kendt Chrome-bug).
@@ -1116,9 +1120,9 @@ function playCelebrationSound(effect, groupName) {
     lines.push({
       text: team,
       lang: "da-DK",
-      rate: Math.min(1.05, style.rate + .04),
-      pitch: Math.max(.55, style.pitch - .04),
-      volume: style.volume,
+      rate: style.rate,
+      pitch: style.pitch,
+      volume: style.volume ?? voiceStyles.default.volume,
       gap: 0
     });
   }
