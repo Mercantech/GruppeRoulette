@@ -57,19 +57,24 @@ const groupNameEnds = [
   "Grævlingerne", "Pindsvinene", "Søløverne", "Krokodillerne", "Papegøjerne", "Natteravnene"
 ];
 const celebrations = [
-  { id: "monster", kicker: "UHYRET ER LØS!", title: "MONSTER GROUP!", subtitle: "Et hold med gigantiske kræfter", voice: "Monster Group!", lang: "en-US", color: "#78ff65", accent: "#8a36ff", symbols: ["◆", "✹", "⚡", "⬢"], notes: [110, 82, 147, 220] },
-  { id: "epic", kicker: "LEGENDARISK TRÆKNING", title: "EPIC GROUP!", subtitle: "Det her bliver stort", voice: "Epic Group!", lang: "en-US", color: "#ffd84d", accent: "#ff6b35", symbols: ["★", "✦", "✺", "⚡"], notes: [392, 523, 659, 784] },
-  { id: "wizard", kicker: "MAGISK FORSTYRRELSE!", title: "Kasper den mægtige troldmand er på spil!", subtitle: "Maskinen sitrer af mystiske kræfter...", voice: "Kasper den mægtige troldmand er på spil!", lang: "da-DK", color: "#d59bff", accent: "#8a36ff", symbols: ["✦", "★", "✧", "☾", "✺"], notes: [220, 277, 330, 440, 554, 659, 880] },
-  { id: "disco", kicker: "LYSET RAMMER DANSEGULVET", title: "DISCO DREAM TEAM!", subtitle: "Groove-niveauet er kritisk højt", voice: "Disco Dream Team!", lang: "en-US", color: "#ff4fa3", accent: "#43e8ff", symbols: ["●", "✦", "◆", "♫"], notes: [262, 330, 392, 523] },
-  { id: "space", kicker: "OPSENDELSE GODKENDT", title: "GALACTIC GROUP!", subtitle: "Næste stop: en helt anden galakse", voice: "Galactic Group!", lang: "en-US", color: "#7bb7ff", accent: "#8a36ff", symbols: ["✦", "☄", "◉", "⋆"], notes: [196, 294, 440, 587] },
-  { id: "viking", kicker: "VALHALLA KALDER", title: "VIKING VICTORY!", subtitle: "Et hold smedet i torden og triumf", voice: "Viking Victory!", lang: "en-US", color: "#ff9f43", accent: "#e74c3c", symbols: ["ᚱ", "ᚦ", "⚔", "ᛉ"], notes: [147, 196, 220, 294] },
-  { id: "ninja", kicker: "LYDLØS. HURTIG. DØDBRINGENDE.", title: "NINJA SQUAD!", subtitle: "Ingen så dem komme", voice: "Ninja Squad!", lang: "en-US", color: "#ff4567", accent: "#6d28d9", symbols: ["✦", "╱", "◆", "✧"], notes: [330, 247, 494, 370] },
-  { id: "royal", kicker: "FANFAREN LYDER", title: "ROYAL GROUP!", subtitle: "Kronen sidder perfekt", voice: "Royal Group!", lang: "en-US", color: "#ffe082", accent: "#b388ff", symbols: ["♛", "✦", "♜", "♦"], notes: [523, 659, 784, 1047] },
-  { id: "fire", kicker: "TEMPERATUREN STIGER", title: "FIRE SQUAD!", subtitle: "Det her hold er brandvarmt", voice: "Fire Squad!", lang: "en-US", color: "#ff6333", accent: "#ffd84d", symbols: ["▲", "✹", "◆", "⚡"], notes: [175, 233, 349, 466] },
-  { id: "ice", kicker: "ABSOLUT NULPUNKT", title: "ICE LEGENDS!", subtitle: "Iskolde nerver. Knivskarpt hold.", voice: "Ice Legends!", lang: "en-US", color: "#8ff5ff", accent: "#4b7bff", symbols: ["❄", "✦", "◇", "❅"], notes: [659, 587, 494, 392] },
-  { id: "jungle", kicker: "JUNGLEN VÅGNER", title: "WILD GROUP!", subtitle: "Det bliver helt ustyrligt", voice: "Wild Group!", lang: "en-US", color: "#8ee34d", accent: "#ffc83d", symbols: ["❋", "◆", "✦", "♣"], notes: [196, 262, 330, 392] },
-  { id: "jackpot", kicker: "ALLE LAMPER BLINKER", title: "MEGA JACKPOT GROUP!", subtitle: "Maskinen har talt", voice: "Mega Jackpot Group!", lang: "en-US", color: "#ffd84d", accent: "#ff4fa3", symbols: ["★", "7", "◆", "✦"], notes: [523, 659, 784, 988, 1175] }
+  { id: "monster", kicker: "UHYRET ER LØS!", title: "MONSTER GROUP!", subtitle: "Et hold med gigantiske kræfter", voice: "Monster group!", lang: "en-US", color: "#78ff65", accent: "#8a36ff", symbols: ["◆", "✹", "⚡", "⬢"], notes: [110, 82, 147, 220], voiceStyle: { rate: .78, pitch: .62, volume: 1 } },
+  { id: "epic", kicker: "LEGENDARISK TRÆKNING", title: "EPIC GROUP!", subtitle: "Det her bliver stort", voice: "Epic group!", lang: "en-US", color: "#ffd84d", accent: "#ff6b35", symbols: ["★", "✦", "✺", "⚡"], notes: [392, 523, 659, 784], voiceStyle: { rate: 1.02, pitch: .92, volume: 1 } },
+  { id: "wizard", kicker: "MAGISK FORSTYRRELSE!", title: "Kasper den mægtige troldmand er på spil!", subtitle: "Maskinen sitrer af mystiske kræfter...", voice: "Kasper den mægtige troldmand er på spil!", lang: "da-DK", color: "#d59bff", accent: "#8a36ff", symbols: ["✦", "★", "✧", "☾", "✺"], notes: [220, 277, 330, 440, 554, 659, 880], voiceStyle: { rate: .9, pitch: .72, volume: .95 } },
+  { id: "disco", kicker: "LYSET RAMMER DANSEGULVET", title: "DISCO DREAM TEAM!", subtitle: "Groove-niveauet er kritisk højt", voice: "Disco dream team!", lang: "en-US", color: "#ff4fa3", accent: "#43e8ff", symbols: ["●", "✦", "◆", "♫"], notes: [262, 330, 392, 523], voiceStyle: { rate: 1.08, pitch: 1.05, volume: 1 } },
+  { id: "space", kicker: "OPSENDELSE GODKENDT", title: "GALACTIC GROUP!", subtitle: "Næste stop: en helt anden galakse", voice: "Galactic group!", lang: "en-US", color: "#7bb7ff", accent: "#8a36ff", symbols: ["✦", "☄", "◉", "⋆"], notes: [196, 294, 440, 587], voiceStyle: { rate: .88, pitch: .7, volume: .95 } },
+  { id: "viking", kicker: "VALHALLA KALDER", title: "VIKING VICTORY!", subtitle: "Et hold smedet i torden og triumf", voice: "Viking victory!", lang: "en-US", color: "#ff9f43", accent: "#e74c3c", symbols: ["ᚱ", "ᚦ", "⚔", "ᛉ"], notes: [147, 196, 220, 294], voiceStyle: { rate: .82, pitch: .58, volume: 1 } },
+  { id: "ninja", kicker: "LYDLØS. HURTIG. DØDBRINGENDE.", title: "NINJA SQUAD!", subtitle: "Ingen så dem komme", voice: "Ninja squad!", lang: "en-US", color: "#ff4567", accent: "#6d28d9", symbols: ["✦", "╱", "◆", "✧"], notes: [330, 247, 494, 370], voiceStyle: { rate: 1.18, pitch: .68, volume: .85 } },
+  { id: "royal", kicker: "FANFAREN LYDER", title: "ROYAL GROUP!", subtitle: "Kronen sidder perfekt", voice: "Royal group!", lang: "en-US", color: "#ffe082", accent: "#b388ff", symbols: ["♛", "✦", "♜", "♦"], notes: [523, 659, 784, 1047], voiceStyle: { rate: .94, pitch: .85, volume: .95 } },
+  { id: "fire", kicker: "TEMPERATUREN STIGER", title: "FIRE SQUAD!", subtitle: "Det her hold er brandvarmt", voice: "Fire squad!", lang: "en-US", color: "#ff6333", accent: "#ffd84d", symbols: ["▲", "✹", "◆", "⚡"], notes: [175, 233, 349, 466], voiceStyle: { rate: 1.06, pitch: .8, volume: 1 } },
+  { id: "ice", kicker: "ABSOLUT NULPUNKT", title: "ICE LEGENDS!", subtitle: "Iskolde nerver. Knivskarpt hold.", voice: "Ice legends!", lang: "en-US", color: "#8ff5ff", accent: "#4b7bff", symbols: ["❄", "✦", "◇", "❅"], notes: [659, 587, 494, 392], voiceStyle: { rate: .86, pitch: .66, volume: .9 } },
+  { id: "jungle", kicker: "JUNGLEN VÅGNER", title: "WILD GROUP!", subtitle: "Det bliver helt ustyrligt", voice: "Wild group!", lang: "en-US", color: "#8ee34d", accent: "#ffc83d", symbols: ["❋", "◆", "✦", "♣"], notes: [196, 262, 330, 392], voiceStyle: { rate: 1.04, pitch: .78, volume: 1 } },
+  { id: "jackpot", kicker: "ALLE LAMPER BLINKER", title: "MEGA JACKPOT GROUP!", subtitle: "Maskinen har talt", voice: "Mega jackpot!", lang: "en-US", color: "#ffd84d", accent: "#ff4fa3", symbols: ["★", "7", "◆", "✦"], notes: [523, 659, 784, 988, 1175], voiceStyle: { rate: 1.1, pitch: .9, volume: 1 } }
 ];
+const voiceStyles = {
+  default: { rate: .98, pitch: .82, volume: .95 },
+  hype: { rate: 1.05, pitch: .88, volume: 1 },
+  deep: { rate: .84, pitch: .6, volume: 1 }
+};
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -128,7 +133,11 @@ let suppressLeverClick = false;
 let pendingCelebrationId = null;
 let isHacking = false;
 let speechVoices = [];
-let preferredVoices = { da: null, en: null };
+let preferredVoices = { da: [], en: [] };
+let speechQueue = Promise.resolve();
+let speechKeepAliveTimer = null;
+let speechUtteranceToken = 0;
+let preferOnlineVoices = true;
 
 function loadState() {
   try {
@@ -898,60 +907,223 @@ function playWinSound() { [523, 659, 784, 1047].forEach((frequency, index) => to
 function refreshSpeechVoices() {
   if (!("speechSynthesis" in window)) return;
   speechVoices = window.speechSynthesis.getVoices();
-  preferredVoices.da = pickBestVoice("da");
-  preferredVoices.en = pickBestVoice("en");
+  preferredVoices.da = rankVoices("da");
+  preferredVoices.en = rankVoices("en");
 }
 
 function voiceScore(voice, langPrefix) {
   const name = `${voice.name} ${voice.voiceURI}`.toLowerCase();
   const lang = (voice.lang || "").toLowerCase();
   let score = 0;
-  if (lang.startsWith(langPrefix)) score += 40;
-  else if (lang.startsWith(langPrefix.slice(0, 2))) score += 20;
-  if (/natural|neural|online|premium|enhanced|wavenet|studio/.test(name)) score += 35;
-  if (/microsoft|google|apple|samantha|freja|sara|anna|daniel/.test(name)) score += 12;
-  if (/compact|eloquence|espeak|robot|novelty/.test(name)) score -= 25;
-  if (voice.localService === false) score += 8;
-  if (voice.default) score += 2;
+  if (lang.startsWith(langPrefix)) score += 50;
+  else if (lang.startsWith(langPrefix.slice(0, 2))) score += 18;
+  else return -100;
+
+  // Neural/natural lyder menneskeligt – men Online-stemmer dør ofte efter få kald i Chrome.
+  if (/natural|neural|premium|enhanced|wavenet|studio|online/.test(name)) score += 28;
+  if (voice.localService) score += preferOnlineVoices ? 6 : 30;
+  else score += preferOnlineVoices ? 10 : -8;
+
+  // Edgy announcer-agtige stemmer først; bløde assistent-stemmer længere nede.
+  if (/guy|david|mark|george|christopher|eric|steffan|ryan|thomas|jeppe|anders|magnus|daniel|arthur|aaron|roger/.test(name)) score += 22;
+  if (/microsoft|google|apple/.test(name)) score += 8;
+  if (/freja|sara|zira|samantha|karen|moira|fiona|helena|jenny|aria|susan|anna|linda/.test(name)) score -= 4;
+  if (/compact|eloquence|espeak|robot|novelty|whisper|dummy/.test(name)) score -= 40;
+  if (voice.default) score += 1;
   return score;
 }
 
-function pickBestVoice(langPrefix) {
-  if (!speechVoices.length) return null;
-  const ranked = [...speechVoices].sort((a, b) => voiceScore(b, langPrefix) - voiceScore(a, langPrefix));
-  return ranked[0] && voiceScore(ranked[0], langPrefix) > 0 ? ranked[0] : null;
+function rankVoices(langPrefix) {
+  return [...speechVoices]
+    .map((voice) => ({ voice, score: voiceScore(voice, langPrefix) }))
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map((entry) => entry.voice);
 }
 
-function speakAnnouncement(text, { lang = "da-DK", rate = .96, pitch = 1, volume = .9 } = {}) {
-  if (!soundEnabled || !text || !("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) return;
-  refreshSpeechVoices();
-  window.speechSynthesis.cancel();
-  const phrase = new SpeechSynthesisUtterance(text);
-  const langPrefix = lang.toLowerCase().startsWith("en") ? "en" : "da";
-  const voice = preferredVoices[langPrefix] || pickBestVoice(langPrefix);
-  if (voice) {
-    phrase.voice = voice;
-    phrase.lang = voice.lang || lang;
-  } else {
-    phrase.lang = lang;
+function pickVoice(langPrefix, offset = 0) {
+  const ranked = preferredVoices[langPrefix] || [];
+  if (!ranked.length) return null;
+  return ranked[Math.min(offset, ranked.length - 1)] || ranked[0];
+}
+
+function speakableGroupName(name) {
+  return String(name || "")
+    .replace(/([a-zæøå])([A-ZÆØÅ])/g, "$1 $2")
+    .replace(/([A-ZÆØÅ]+)([A-ZÆØÅ][a-zæøå])/g, "$1 $2")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function kickSpeechEngine() {
+  if (!("speechSynthesis" in window)) return;
+  try {
+    // Chrome sætter ofte speaking i en død paused-tilstand efter 1–2 Online-oplæsninger.
+    if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+    window.speechSynthesis.resume();
+  } catch (_) {}
+}
+
+function startSpeechKeepAlive() {
+  if (speechKeepAliveTimer || !("speechSynthesis" in window)) return;
+  speechKeepAliveTimer = setInterval(() => {
+    if (!soundEnabled) return;
+    if (window.speechSynthesis.speaking) {
+      try {
+        window.speechSynthesis.pause();
+        window.speechSynthesis.resume();
+      } catch (_) {}
+    } else {
+      kickSpeechEngine();
+    }
+  }, 4500);
+}
+
+function stopSpeechPlayback() {
+  speechUtteranceToken += 1;
+  speechQueue = Promise.resolve();
+  if ("speechSynthesis" in window) {
+    try {
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.resume();
+    } catch (_) {}
   }
-  phrase.rate = rate;
-  phrase.pitch = pitch;
-  phrase.volume = volume;
-  // Chrome kan droppe første speak lige efter cancel – en lille pause gør neurale stemmer mere stabile.
-  setTimeout(() => window.speechSynthesis.speak(phrase), 120);
+}
+
+function speakLine(text, options = {}, attempt = 0) {
+  if (!soundEnabled || !text || !("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
+    return Promise.resolve();
+  }
+
+  refreshSpeechVoices();
+  startSpeechKeepAlive();
+  const token = speechUtteranceToken;
+  const lang = options.lang || "da-DK";
+  const langPrefix = lang.toLowerCase().startsWith("en") ? "en" : "da";
+  const voice = pickVoice(langPrefix, attempt);
+
+  return new Promise((resolve) => {
+    const phrase = new SpeechSynthesisUtterance(text);
+    let settled = false;
+    let watchdog;
+    let pulse;
+
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(watchdog);
+      clearInterval(pulse);
+      phrase.onend = null;
+      phrase.onerror = null;
+      resolve();
+    };
+
+    const retry = () => {
+      if (settled || token !== speechUtteranceToken) return;
+      if (attempt >= 2) {
+        finish();
+        return;
+      }
+      settled = true;
+      clearTimeout(watchdog);
+      clearInterval(pulse);
+      phrase.onend = null;
+      phrase.onerror = null;
+      preferOnlineVoices = false;
+      refreshSpeechVoices();
+      try { window.speechSynthesis.cancel(); } catch (_) {}
+      speakLine(text, options, attempt + 1).then(resolve);
+    };
+
+    if (voice) {
+      phrase.voice = voice;
+      phrase.lang = voice.lang || lang;
+    } else {
+      phrase.lang = lang;
+    }
+    phrase.rate = options.rate ?? voiceStyles.default.rate;
+    phrase.pitch = options.pitch ?? voiceStyles.default.pitch;
+    phrase.volume = options.volume ?? voiceStyles.default.volume;
+    phrase.onend = finish;
+    phrase.onerror = retry;
+
+    // Hold motoren i live mens den taler (kendt Chrome-bug).
+    pulse = setInterval(() => {
+      if (token !== speechUtteranceToken || settled) {
+        clearInterval(pulse);
+        return;
+      }
+      kickSpeechEngine();
+    }, 2500);
+
+    watchdog = setTimeout(() => {
+      if (settled || token !== speechUtteranceToken) return;
+      // Silent hang uden onerror – typisk Online-stemme der dør midt i sessionen.
+      retry();
+    }, Math.max(4500, text.length * 160));
+
+    kickSpeechEngine();
+    // Kort delay efter cancel, ellers spiser Chrome næste speak.
+    setTimeout(() => {
+      if (token !== speechUtteranceToken || settled) return finish();
+      kickSpeechEngine();
+      window.speechSynthesis.speak(phrase);
+    }, attempt === 0 ? 80 : 160);
+  });
+}
+
+function speakAnnouncement(lines) {
+  if (!soundEnabled || !("speechSynthesis" in window)) return;
+  const queue = Array.isArray(lines) ? lines.filter((line) => line?.text) : [{ text: lines }];
+  if (!queue.length) return;
+
+  speechUtteranceToken += 1;
+  try {
+    window.speechSynthesis.cancel();
+    kickSpeechEngine();
+  } catch (_) {}
+
+  speechQueue = queue.reduce(
+    (chain, line) => chain.then(() => {
+      if (!soundEnabled) return undefined;
+      return speakLine(line.text, line).then(() => wait(line.gap ?? 180));
+    }),
+    Promise.resolve()
+  );
 }
 
 function playCelebrationSound(effect, groupName) {
   effect.notes.forEach((frequency, index) => tone(frequency, .65, index % 2 ? "triangle" : "sine", .038, index * .09));
   tone(effect.notes[0] / 2, 1.25, "triangle", .025);
-  const spoken = groupName || effect.voice;
-  const lang = /[æøå]/i.test(spoken) || effect.lang === "da-DK" ? "da-DK" : (effect.lang || "da-DK");
-  speakAnnouncement(spoken, {
-    lang,
-    rate: effect.id === "monster" ? .78 : effect.id === "ninja" ? 1.12 : .98,
-    pitch: effect.id === "monster" ? .7 : effect.id === "epic" ? 1.08 : 1
-  });
+
+  const style = { ...voiceStyles.default, ...(effect.voiceStyle || {}) };
+  const hype = effect.voice;
+  const team = speakableGroupName(groupName);
+  const lines = [];
+
+  if (hype) {
+    lines.push({
+      text: hype,
+      lang: effect.lang || "en-US",
+      rate: style.rate,
+      pitch: style.pitch,
+      volume: style.volume,
+      gap: 220
+    });
+  }
+
+  if (team && team.toLocaleLowerCase("da") !== String(hype || "").toLocaleLowerCase("da")) {
+    lines.push({
+      text: team,
+      lang: "da-DK",
+      rate: Math.min(1.05, style.rate + .04),
+      pitch: Math.max(.55, style.pitch - .04),
+      volume: style.volume,
+      gap: 0
+    });
+  }
+
+  speakAnnouncement(lines);
 }
 
 function playHackSound() {
@@ -1057,8 +1229,13 @@ elements.soundToggle.addEventListener("click", () => {
   elements.soundToggle.classList.toggle("muted", !soundEnabled);
   elements.soundToggle.setAttribute("aria-pressed", String(soundEnabled));
   elements.soundToggle.setAttribute("aria-label", soundEnabled ? "Slå lyd fra" : "Slå lyd til");
-  if (!soundEnabled && "speechSynthesis" in window) window.speechSynthesis.cancel();
-  if (soundEnabled) { ensureAudio(); tone(660, .12, "sine", .03); }
+  if (!soundEnabled) stopSpeechPlayback();
+  if (soundEnabled) {
+    ensureAudio();
+    startSpeechKeepAlive();
+    kickSpeechEngine();
+    tone(660, .12, "sine", .03);
+  }
 });
 window.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && elements.hackerOverlay.classList.contains("show")) {
@@ -1080,6 +1257,7 @@ if ("speechSynthesis" in window) {
   window.speechSynthesis.addEventListener?.("voiceschanged", refreshSpeechVoices);
   // Nogle browsere fylder stemmelisten først efter et kald.
   window.speechSynthesis.getVoices();
+  startSpeechKeepAlive();
 }
 
 render();
