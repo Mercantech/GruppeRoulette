@@ -3,6 +3,36 @@ const demoNames = [
   "Alma", "Malik", "Freja", "Noah", "Clara", "Elias", "Asta", "Oscar", "Sofia",
   "Viggo", "Luna", "William", "Ida", "Adam", "Karla", "August", "Aya", "Mads"
 ];
+const sampleGroupsText = `GRUPPE 1
+ChampagneVaskebjørnene
+Mads
+Roman
+Kasper
+GRUPPE 2
+SølvTryllekunstnerne
+René
+Jasmin
+Andreas
+GRUPPE 3
+MesterKænguruerne
+Victoria
+Oleh
+Christian
+GRUPPE 4
+MåneHajerne
+Mikkel Skov
+Yana
+Mikkel Terp
+GRUPPE 5
+IsGirafferne
+Mark
+Oliver
+Tetiana
+GRUPPE 6
+KlatreHamsterne
+Andreas M
+Frederik
+Bjarke`;
 const colors = ["#ffd84d", "#ff4fa3", "#8a36ff", "#54e3c2", "#ff815a", "#7bb7ff"];
 const slotEmojis = ["🍒", "⭐", "💎", "🔥", "👾", "🦄", "🍀", "🎰", "⚡", "🌈"];
 const groupNameStarts = [
@@ -80,7 +110,10 @@ const elements = {
   hackerMembers: $("#hackerMembers"),
   hackerNewName: $("#hackerNewName"),
   canvas: $("#confettiCanvas"),
-  soundToggle: $("#soundToggle")
+  soundToggle: $("#soundToggle"),
+  preloadDialog: $("#preloadDialog"),
+  groupsInput: $("#groupsInput"),
+  preloadStartRound: $("#preloadStartRound")
 };
 
 let state = loadState();
@@ -94,6 +127,8 @@ let leverPointer = null;
 let suppressLeverClick = false;
 let pendingCelebrationId = null;
 let isHacking = false;
+let speechVoices = [];
+let preferredVoices = { da: null, en: null };
 
 function loadState() {
   try {
@@ -717,6 +752,125 @@ async function copyGroups() {
   }
 }
 
+function isNoiseLine(line) {
+  return !line || line === "↻" || /^nyt navn$/i.test(line) || /^runde\s+\d+$/i.test(line);
+}
+
+function parseInlineGroupLine(line) {
+  const match = line.match(/^(?:runde\s+(\d+)\s*[–\-:]\s*)?(.+?)\s*:\s*(.+)$/i);
+  if (!match) return null;
+  const members = match[3].split(/[,;·|/]+/).map((name) => name.trim().replace(/\s+/g, " ")).filter(Boolean);
+  if (members.length < 2) return null;
+  return {
+    round: match[1] ? Number(match[1]) : 1,
+    name: match[2].trim(),
+    members
+  };
+}
+
+function parseGroupsText(text) {
+  const lines = text
+    .replace(/\u00a0/g, " ")
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => !isNoiseLine(line));
+
+  if (!lines.length) return [];
+
+  const inlineGroups = lines.map(parseInlineGroupLine).filter(Boolean);
+  if (inlineGroups.length === lines.length) return inlineGroups;
+
+  const groups = [];
+  let current = null;
+  let expectingName = false;
+
+  const pushCurrent = () => {
+    if (current?.name && current.members.length >= 2) groups.push(current);
+    current = null;
+    expectingName = false;
+  };
+
+  lines.forEach((line) => {
+    const inline = parseInlineGroupLine(line);
+    if (inline) {
+      pushCurrent();
+      groups.push(inline);
+      return;
+    }
+
+    const header = line.match(/^gruppe\s+(\d+)\b/i);
+    if (header) {
+      pushCurrent();
+      current = { round: 1, name: "", members: [], number: Number(header[1]) };
+      expectingName = true;
+      return;
+    }
+
+    if (!current) {
+      current = { round: 1, name: line, members: [] };
+      expectingName = false;
+      return;
+    }
+
+    if (expectingName || !current.name) {
+      current.name = line;
+      expectingName = false;
+      return;
+    }
+
+    current.members.push(line.replace(/\s+/g, " "));
+  });
+
+  pushCurrent();
+  return groups.filter((group) => group.name && group.members.length >= 2);
+}
+
+function preloadGroups() {
+  if (isSpinning) return;
+  const parsed = parseGroupsText(elements.groupsInput.value);
+  if (!parsed.length) {
+    showToast("Kunne ikke finde grupper i teksten");
+    return;
+  }
+
+  if ((state.groups.length || state.remaining.length)
+    && !confirm("Det overskriver nuværende navne og grupper. Fortsæt?")) return;
+
+  const startNewRound = elements.preloadStartRound.checked;
+  const historyRound = 1;
+  const groups = parsed.map((group, index) => ({
+    id: makeId(),
+    name: group.name,
+    members: group.members,
+    round: group.round || historyRound,
+    number: group.number || index + 1
+  }));
+
+  // Nyeste gruppe først, så overblik og makkerhistorik matcher den normale rækkefølge.
+  groups.reverse();
+  const roster = [...new Set(groups.flatMap((group) => group.members))];
+  const maxRound = Math.max(1, ...groups.map((group) => group.round));
+
+  state = {
+    remaining: startNewRound ? [...roster] : [],
+    groups,
+    roster,
+    round: startNewRound ? maxRound + 1 : maxRound,
+    initialCount: roster.length,
+    leverPullCount: 0
+  };
+  saveState();
+  elements.machine.classList.remove("emoji-mode");
+  $$(".reel-name").forEach((node) => { node.textContent = "Klar?"; });
+  elements.preloadDialog.close();
+  elements.groupsInput.value = "";
+  render();
+  switchTab(startNewRound ? "people" : "groups");
+  showToast(startNewRound
+    ? `${parsed.length} grupper indlæst – runde ${state.round} er klar`
+    : `${parsed.length} grupper indlæst`);
+}
+
 function ensureAudio() {
   if (!soundEnabled) return;
   audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
@@ -740,17 +894,64 @@ function playLeverSound() { tone(120, .18, "sawtooth", .035); tone(70, .22, "squ
 function playTick(index) { if (Math.random() > .52) tone(190 + index * 25, .035, "square", .009); }
 function playLock(index) { tone(230 + index * 90, .16, "square", .045); tone(110, .18, "sine", .035); }
 function playWinSound() { [523, 659, 784, 1047].forEach((frequency, index) => tone(frequency, .5, "triangle", .045, index * .11)); }
+
+function refreshSpeechVoices() {
+  if (!("speechSynthesis" in window)) return;
+  speechVoices = window.speechSynthesis.getVoices();
+  preferredVoices.da = pickBestVoice("da");
+  preferredVoices.en = pickBestVoice("en");
+}
+
+function voiceScore(voice, langPrefix) {
+  const name = `${voice.name} ${voice.voiceURI}`.toLowerCase();
+  const lang = (voice.lang || "").toLowerCase();
+  let score = 0;
+  if (lang.startsWith(langPrefix)) score += 40;
+  else if (lang.startsWith(langPrefix.slice(0, 2))) score += 20;
+  if (/natural|neural|online|premium|enhanced|wavenet|studio/.test(name)) score += 35;
+  if (/microsoft|google|apple|samantha|freja|sara|anna|daniel/.test(name)) score += 12;
+  if (/compact|eloquence|espeak|robot|novelty/.test(name)) score -= 25;
+  if (voice.localService === false) score += 8;
+  if (voice.default) score += 2;
+  return score;
+}
+
+function pickBestVoice(langPrefix) {
+  if (!speechVoices.length) return null;
+  const ranked = [...speechVoices].sort((a, b) => voiceScore(b, langPrefix) - voiceScore(a, langPrefix));
+  return ranked[0] && voiceScore(ranked[0], langPrefix) > 0 ? ranked[0] : null;
+}
+
+function speakAnnouncement(text, { lang = "da-DK", rate = .96, pitch = 1, volume = .9 } = {}) {
+  if (!soundEnabled || !text || !("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) return;
+  refreshSpeechVoices();
+  window.speechSynthesis.cancel();
+  const phrase = new SpeechSynthesisUtterance(text);
+  const langPrefix = lang.toLowerCase().startsWith("en") ? "en" : "da";
+  const voice = preferredVoices[langPrefix] || pickBestVoice(langPrefix);
+  if (voice) {
+    phrase.voice = voice;
+    phrase.lang = voice.lang || lang;
+  } else {
+    phrase.lang = lang;
+  }
+  phrase.rate = rate;
+  phrase.pitch = pitch;
+  phrase.volume = volume;
+  // Chrome kan droppe første speak lige efter cancel – en lille pause gør neurale stemmer mere stabile.
+  setTimeout(() => window.speechSynthesis.speak(phrase), 120);
+}
+
 function playCelebrationSound(effect, groupName) {
   effect.notes.forEach((frequency, index) => tone(frequency, .65, index % 2 ? "triangle" : "sine", .038, index * .09));
   tone(effect.notes[0] / 2, 1.25, "triangle", .025);
-  if (!soundEnabled || !("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) return;
-  window.speechSynthesis.cancel();
-  const phrase = new SpeechSynthesisUtterance(groupName);
-  phrase.lang = "da-DK";
-  phrase.rate = effect.id === "monster" ? .72 : effect.id === "ninja" ? 1.25 : .92;
-  phrase.pitch = effect.id === "monster" ? .45 : effect.id === "epic" ? 1.15 : .9;
-  phrase.volume = .8;
-  setTimeout(() => window.speechSynthesis.speak(phrase), 180);
+  const spoken = groupName || effect.voice;
+  const lang = /[æøå]/i.test(spoken) || effect.lang === "da-DK" ? "da-DK" : (effect.lang || "da-DK");
+  speakAnnouncement(spoken, {
+    lang,
+    rate: effect.id === "monster" ? .78 : effect.id === "ninja" ? 1.12 : .98,
+    pitch: effect.id === "monster" ? .7 : effect.id === "epic" ? 1.08 : 1
+  });
 }
 
 function playHackSound() {
@@ -805,6 +1006,12 @@ function launchConfetti() {
 $("#openAddButton").addEventListener("click", () => { elements.dialog.showModal(); setTimeout(() => elements.namesInput.focus(), 50); });
 $("#addNamesButton").addEventListener("click", addNames);
 $("#loadDemoButton").addEventListener("click", () => { elements.namesInput.value = demoNames.join("\n"); });
+$("#openPreloadButton").addEventListener("click", () => {
+  elements.preloadDialog.showModal();
+  setTimeout(() => elements.groupsInput.focus(), 50);
+});
+$("#preloadGroupsButton").addEventListener("click", preloadGroups);
+$("#loadSampleGroupsButton").addEventListener("click", () => { elements.groupsInput.value = sampleGroupsText; });
 $("#peopleTab").addEventListener("click", () => switchTab("people"));
 $("#groupsTab").addEventListener("click", () => switchTab("groups"));
 $("#copyGroupsButton").addEventListener("click", copyGroups);
@@ -862,11 +1069,18 @@ window.addEventListener("keydown", (event) => {
     toggleFullOverview(false);
     return;
   }
-  if (event.code === "Space" && !elements.dialog.open && event.target === document.body) {
+  if (event.code === "Space" && !elements.dialog.open && !elements.preloadDialog.open && event.target === document.body) {
     event.preventDefault();
     spin();
   }
 });
+
+if ("speechSynthesis" in window) {
+  refreshSpeechVoices();
+  window.speechSynthesis.addEventListener?.("voiceschanged", refreshSpeechVoices);
+  // Nogle browsere fylder stemmelisten først efter et kald.
+  window.speechSynthesis.getVoices();
+}
 
 render();
 if (!state.initialCount) setTimeout(() => elements.dialog.showModal(), 450);

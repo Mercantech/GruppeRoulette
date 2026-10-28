@@ -128,13 +128,16 @@
               <p class="eyebrow">RESULTATER</p>
               <h2>Dannede grupper</h2>
             </div>
-            <button class="small-button" id="copyGroupsButton" type="button">Kopiér</button>
+            <div class="panel-heading-actions">
+              <button class="small-button" id="openPreloadButton" type="button">Indlæs</button>
+              <button class="small-button" id="copyGroupsButton" type="button">Kopiér</button>
+            </div>
           </div>
           <div class="group-list" id="groupList"></div>
           <div class="empty-state" id="groupsEmpty">
             <span aria-hidden="true">♠</span>
             <strong>Ingen grupper endnu</strong>
-            <p>Den første jackpot venter på dig.</p>
+            <p>Træk jackpotten – eller indlæs gamle grupper.</p>
           </div>
         </div>
       </aside>
@@ -165,6 +168,29 @@
         <div class="dialog-actions">
           <button class="text-button" id="loadDemoButton" type="button">Brug demo-navne</button>
           <button class="primary-button" id="addNamesButton" type="button">Tilføj navne</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="add-dialog preload-dialog" id="preloadDialog">
+      <form method="dialog" id="preloadForm">
+        <div class="dialog-top">
+          <div>
+            <p class="eyebrow">GAMLE GRUPPER</p>
+            <h2>Indlæs grupper</h2>
+          </div>
+          <button class="close-button" value="cancel" aria-label="Luk" type="submit">×</button>
+        </div>
+        <p class="dialog-hint">Paste et overblik eller “Runde 1 – Navn: A, B, C”. Makkerpar huskes, så næste runde undgår gentagelser.</p>
+        <label for="groupsInput">Grupper</label>
+        <textarea id="groupsInput" rows="14" placeholder="GRUPPE 1&#10;ChampagneVaskebjørnene&#10;Mads&#10;Roman&#10;Kasper"></textarea>
+        <label class="dialog-check">
+          <input type="checkbox" id="preloadStartRound" checked />
+          Start ny runde med samme deltagere bagefter
+        </label>
+        <div class="dialog-actions">
+          <button class="text-button" id="loadSampleGroupsButton" type="button">Brug eksempel</button>
+          <button class="primary-button" id="preloadGroupsButton" type="button">Indlæs grupper</button>
         </div>
       </form>
     </dialog>
